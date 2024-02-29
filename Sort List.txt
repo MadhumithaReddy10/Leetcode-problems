@@ -1,0 +1,54 @@
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode mid = findMid(head);
+        ListNode sHead  = mid.next;
+        mid.next = null;
+        return merge(sortList(head),sortList(sHead));        
+    }
+
+    public ListNode findMid(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        ListNode prev = null;
+        while(fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return prev;
+    }
+
+    public ListNode merge(ListNode head, ListNode sHead) {
+        if(head == null){
+            return sHead;
+        }
+        if(sHead == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode();
+        ListNode tempHead = dummy;
+        while(head != null && sHead != null) {
+            if(head.val < sHead.val) {
+                tempHead.next = head;
+                tempHead = tempHead.next;
+                head = head.next;
+            } else {
+                tempHead.next = sHead;
+                tempHead = tempHead.next;
+                sHead = sHead.next;
+            }
+        }
+        if(head != null){
+            tempHead.next = head;
+        }
+        if(sHead != null){
+            tempHead.next = sHead;
+        }
+
+        return dummy.next;
+    }
+}
