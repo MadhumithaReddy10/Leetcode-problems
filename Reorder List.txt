@@ -1,0 +1,59 @@
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null) {
+            return;
+        }
+        ListNode mid = findMid(head);
+        ListNode sHead = reverse(mid.next);
+        mid.next = null;
+        combine(head, sHead);        
+    }
+
+    public ListNode findMid(ListNode head) {
+        ListNode prev = null;
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return prev;
+    }
+
+    public ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while(curr != null) {
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+
+    public ListNode combine(ListNode head, ListNode sHead) {
+        ListNode dummy = new ListNode();
+        ListNode temp = dummy;
+
+        while(head != null && sHead != null) {
+            temp.next = head;
+            head = head.next;
+            temp = temp.next;
+        
+            temp.next = sHead;
+            sHead = sHead.next;
+            temp = temp.next;
+        }
+
+        if(head != null) {
+            temp.next = head;
+        }
+        if(sHead != null) {
+            temp.next = sHead;
+        }
+        return dummy.next;
+    }
+}
